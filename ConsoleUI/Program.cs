@@ -11,8 +11,14 @@ namespace ConsoleUI
 	{
 		static void Main(string[] args)
         {
-            // ProductTest();
+            ProductTest();
 
+            //CategoryTest();
+
+        }
+
+        private static void CategoryTest()
+        {
             CategoryManager categoryManager = new CategoryManager(new EfCategoryDal());
 
             foreach (var category in categoryManager.GetAll())
@@ -24,15 +30,22 @@ namespace ConsoleUI
 
             Category categorySingle = categoryManager.GetById(3);
 
-            Console.WriteLine(categorySingle.CategoryName); 
-
+            Console.WriteLine(categorySingle.CategoryName);
         }
 
         private static void ProductTest()
         {
             ProductManager productManager = new ProductManager(new EfProductDal());
 
-            foreach (var product in productManager.GetAllByCategoryId(2))
+            foreach (var product in productManager.GetProductsDetails()) // Categories ile Products tablosunun JOIN ornegi
+            {
+                Console.WriteLine(product.ProductId + " / " + product.ProductName + " / " + product.CategoryName + " / " + product.UnitsInStock);
+
+                
+            }
+            
+
+            /*foreach (var product in productManager.GetAllByCategoryId(2))
             {
                 Console.WriteLine(product.ProductName);
 
@@ -52,7 +65,9 @@ namespace ConsoleUI
             {
                 Console.WriteLine(product.UnitPrice);
 
-            }
+            }*/
+
+
         }
 
 
