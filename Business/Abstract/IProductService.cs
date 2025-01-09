@@ -1,4 +1,5 @@
-﻿using Entities.Concrete;
+﻿using Core.Utilities.Results;
+using Entities.Concrete;
 using Entities.DTOs;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,17 @@ namespace Business.Abstract
 {
     public interface IProductService
     {
-        List<Product> GetAll();
-        List<Product> GetAllByCategoryId(int id);
-        List<Product> GetAllByUnitPrice(decimal min, decimal max );
+        IDataResult<List<Product>> GetAll();
+        IDataResult<List<Product>> GetAllByCategoryId(int id);
+        IDataResult<List<Product>> GetAllByUnitPrice(decimal min, decimal max );
+        IDataResult<List<ProductDetailDto>> GetProductsDetails();
 
-        List<ProductDetailDto> GetProductsDetails();
+        IDataResult<Product> GetById(int productId);
+
+        // void Add(Product product); normalde boyleydi
+        IResult Add(Product product); // artik void gordun yerlerde IResult yazacaksin cunku API yaziyoruz ve request sonucunda bir response dondurmemiz lazim
+
+
 
     }
 }

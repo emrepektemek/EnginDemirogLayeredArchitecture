@@ -17,7 +17,7 @@ namespace DataAccess.Concrete.EntityFramework
         public List<ProductDetailDto> GetProductDetails()
         {
 
-            // Linq ile JOIN tabikide veri tabanina baglanabilmek icin context nesnesi lazim 
+            // Linq ile JOIN yapabilmek icin tabikide veri tabanina baglanabilmek icin context nesnesi lazim 
 
             using (NorthwindContext context = new NorthwindContext())
             {

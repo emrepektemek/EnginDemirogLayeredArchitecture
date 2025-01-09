@@ -37,42 +37,20 @@ namespace ConsoleUI
         {
             ProductManager productManager = new ProductManager(new EfProductDal());
 
-            foreach (var product in productManager.GetProductsDetails()) // Categories ile Products tablosunun JOIN ornegi
-            {
-                Console.WriteLine(product.ProductId + " / " + product.ProductName + " / " + product.CategoryName + " / " + product.UnitsInStock);
+            var result = productManager.GetProductsDetails();
 
-                
-            }
-            
-
-            /*foreach (var product in productManager.GetAllByCategoryId(2))
+            if (result.Success)
             {
-                Console.WriteLine(product.ProductName);
+                foreach (var product in result.Data) // Categories ile Products tablosunun JOIN ornegi
+                {
+                    Console.WriteLine(product.ProductId + " / " + product.ProductName + " / " + product.CategoryName + " / " + product.UnitsInStock);
+                }
 
             }
-
-            Console.WriteLine();
-
-            foreach (var product in productManager.GetAll())
+            else
             {
-                Console.WriteLine(product.ProductName);
-
+                Console.WriteLine(result.Message);
             }
-
-            Console.WriteLine();
-
-            foreach (var product in productManager.GetAllByUnitPrice(20, 100))
-            {
-                Console.WriteLine(product.UnitPrice);
-
-            }*/
-
-
         }
-
-
-
-
     }
-
 }
