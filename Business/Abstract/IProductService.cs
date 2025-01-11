@@ -21,7 +21,7 @@ namespace Business.Abstract
         // void Add(Product product); normalde boyleydi
         IResult Add(Product product); // artik void gordun yerlerde IResult yazacaksin cunku API yaziyoruz ve request sonucunda bir response dondurmemiz lazim
 
-
+        IResult Update(Product product);
 
     }
 }
