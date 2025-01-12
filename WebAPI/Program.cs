@@ -1,10 +1,10 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Business.Abstract;
-using Business.Concrete;
 using Business.DependencyResolvers.Autofac;
-using DataAccess.Abstract;
-using DataAccess.Concrete.EntityFramework;
+using Core.Utilities.Security.Encryption;
+using Core.Utilities.Security.JWT;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 
-// Autofac configuration, bu kod .NET'in IoC container'ý yerine business'da olusturdgumuz Autofac'i kullan kodudur
+// Autofac configuration, bu kod .NET'in IoC container'ý yerine business'da olusturdgumuz Autofac'i kullanan koddur
 
 builder.Host.UseServiceProviderFactory(
     new AutofacServiceProviderFactory())
@@ -23,6 +23,26 @@ builder.Host.UseServiceProviderFactory(
     });
 
 
+// Dogrulama icin JWT kullanilacagini ASP .NET Core Web API'ye bildirdigimiz kisim 
+
+//builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidIssuer = tokenOptions.Issuer,
+            ValidAudience = tokenOptions.Audience,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
+        };
+    });
 
 //  bunlar eski kodlar .NET IoC altyapisi kullaniyordik fakat yukarida .NET IoC altyapisi yerine Autofac IoC altyapisi kullan dedik
 
@@ -45,6 +65,8 @@ if (app.Environment.IsDevelopment())
 }
     
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
