@@ -1,6 +1,9 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Business.DependencyResolvers.Autofac;
+using Core.DependencyResolvers;
+using Core.Extensions;
+using Core.Utilities.IoC;
 using Core.Utilities.Security.Encryption;
 using Core.Utilities.Security.JWT;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -25,7 +28,7 @@ builder.Host.UseServiceProviderFactory(
 
 // Dogrulama icin JWT kullanilacagini ASP .NET Core Web API'ye bildirdigimiz kisim 
 
-//builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 
 var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -43,6 +46,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
         };
     });
+
+builder.Services.AddDependencyResolvers(new ICoreModule[]
+{
+    new CoreModule()
+});
 
 //  bunlar eski kodlar .NET IoC altyapisi kullaniyordik fakat yukarida .NET IoC altyapisi yerine Autofac IoC altyapisi kullan dedik
 
