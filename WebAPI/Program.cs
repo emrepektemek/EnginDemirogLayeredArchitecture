@@ -25,10 +25,9 @@ builder.Host.UseServiceProviderFactory(
         builder.RegisterModule(new AutofacBusinessModule());
     });
 
+builder.Services.AddCors();
 
 // Dogrulama icin JWT kullanilacagini ASP .NET Core Web API'ye bildirdigimiz kisim 
-
-
 
 var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -71,7 +70,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-    
+
+app.UseCors(builder=>builder.WithOrigins("http://localhost:4200").AllowAnyHeader());
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
