@@ -32,7 +32,7 @@ namespace WebAPI.Controllers
             
         }
 
-        [HttpGet("getid")]
+        [HttpGet("getbyid")]
         public IActionResult GetById(int id) { 
             
             var result = _productService.GetById(id);
@@ -42,7 +42,22 @@ namespace WebAPI.Controllers
                 return Ok(result);
             }
             return BadRequest(result);  
-        } 
+        }
+
+
+        [HttpGet("getbycategory")]
+        public IActionResult GetByCategory(int categoryId)
+        {
+
+            var result = _productService.GetAllByCategoryId(categoryId);
+
+            if (result.Success)
+            {
+
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
 
 
         [HttpPost("add")]
