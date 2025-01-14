@@ -53,7 +53,7 @@ namespace Core.CrossCuttingConcerns.Caching.Microsoft
             _memoryCache.Remove(key); 
         }
 
-        
+        /*
         // ezbere bilmene gerek yok mantigini bilmen yeterlidir. Calisma aninda bellekten silmeye yariyor.
         public void RemoveByPattern(string pattern)
         {
@@ -74,6 +74,6 @@ namespace Core.CrossCuttingConcerns.Caching.Microsoft
             {
                 _memoryCache.Remove(key);
             }
-        }
+        }*/
     }
 }
